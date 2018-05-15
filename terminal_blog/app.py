@@ -1,10 +1,17 @@
-import pymongo
+import database
+from models.post import Post
 
-uri = "mongodb://127.0.0.1:27017"
-client = pymongo.MongoClient(uri)
-database = client['fullstack']
-collections = database['students']
 
-students = collections.find({})
+database.Database.initialize()
 
-print(students)
+blog = Blog(author="Weini",
+            title="sample title",
+            description="Sample description")
+
+blog.new_post()
+
+blog.save_to_mongo()
+
+Blog.from_mongo()
+
+blog.get_posts()
