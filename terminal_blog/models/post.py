@@ -1,6 +1,4 @@
 import uuid
-from warnings import cls
-
 from database import Database
 import datetime
 
