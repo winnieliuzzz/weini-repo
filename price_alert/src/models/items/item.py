@@ -6,13 +6,14 @@ import re
 import src.models.items.constants as ItemConstants
 
 from src.common.database import Database
+from src.models.stores.store import Store
 
 
 class Item:
-    def __init__(self, name, url, store, _id=None):
+    def __init__(self, name, url, _id=None):
         self.name = name
         self.url = url
-        self.store = store
+        store = Store.find_by_url(url)
         tag_name = store.tag_name
         query = store.query
         self.price = self.load_price(tag_name, query)
