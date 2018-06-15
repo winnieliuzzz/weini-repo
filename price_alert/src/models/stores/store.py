@@ -37,13 +37,17 @@ class Store:
 
     @classmethod
     def get_by_url_prefix(cls, url_prefix):
-        return cls(**Database.find_one(StoreConstants.COLLECTION, {"url_prefix": {"$regex": '^{}'.format(url_prefix)}}))
+        return [cls(**elem) for elem in Database.find(StoreConstants.COLLECTION, {"url_prefix": {"$regex": '^{}'.format(url_prefix)}})]
 
     @classmethod
     def find_by_url(cls, url):
+        store = None
         for i in range(len(url)+1):
-            try:
-                store = cls.get_by_url_prefix(url[:i])
-                return store
-            except:
+            stores = cls.get_by_url_prefix(url[:i])
+            if len(stores)==0:
                 raise StoreErrors.StoreNotFoundException("The URL Prefix used to find the store didn't give us any results!")
+            else:
+                store = stores[0]
+                if len(stores)==1:
+                    return store
+        return store
