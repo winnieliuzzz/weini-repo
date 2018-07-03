@@ -5,7 +5,7 @@ import src.models.stores.errors as StoreErrors
 
 
 class Store:
-    def __init__(self, name, url_prefix, tag_name, query, _id=None):
+    def __init__(self, name, url_prefix,tag_name, query, _id=None):
         self.name = name
         self.url_prefix = url_prefix
         self.tag_name = tag_name
@@ -29,7 +29,7 @@ class Store:
         return cls(**Database.find_one(StoreConstants.COLLECTION, {"_id":id}))
 
     def save_to_mongo(self):
-        Database.insert(StoreConstants.COLLECTION, self.json())
+        Database.update(StoreConstants.COLLECTION, {'_id': self._id}, self.json())
 
     @classmethod
     def get_by_name(cls, store_name):
@@ -51,3 +51,12 @@ class Store:
                 if len(stores)==1:
                     return store
         return store
+
+
+    @classmethod
+    def all(cls):
+        return [cls(**elem) for elem in Database.find(StoreConstants.COLLECTION, {})]
+
+
+    def delete(self):
+        Database.remove(StoreConstants.COLLECTION, {'_id': self._id})

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+    <br>
+    <div class="jumbotron">
+        {% if not session['email'] %}
+        <h1 class="display-4">Start Tracking Deals!</h1>
+        <p class="lead">We scan online websites to alert you of price drops in items that interest you.</p>
+        <hr class="my-4">
+        <p>Just sign up, and get started by adding the URL of an item that you wish to track. We will do the rest!</p>
+        <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="#registerModal" role="button">Sign
+            up</a>
+        {% else %}
+        <h1 class="display-4">Welcome!</h1>
+        <p class="lead">You're now ready to add alerts or change existing alerts of your desired items.</p>
+        <hr class="my-4">
+        <p>Start by creating some alerts</p>
+        <a class="btn btn-success btn-lg" href="{{ url_for('users.user_alerts')}}" role="button">Start</a>
+        {% endif %}
+    </div>
+{% endblock %}
