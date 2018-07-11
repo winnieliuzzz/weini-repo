@@ -5,4 +5,4 @@ ADMINS = frozenset([
 ])
 DOMAIN = "https://whaleofdeal.herokuapp.com"
 GMAIL = "winnieliuzzz@gmail.com"
-PASSWORD = "LLwgw31082102"
+PASSWORD = ""
