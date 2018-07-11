@@ -4,7 +4,8 @@ import requests
 import src.models.alerts.constants as AlertConstants
 from src.common.database import Database
 from src.models.items.item import Item
-from src.app import app
+import smtplib
+from email.message import EmailMessage
 
 
 class Alert:
@@ -19,18 +20,31 @@ class Alert:
     def __repr__(self):
         return "<Alert for {} on item {} with price {}>".format(self.user_email, self.item.name, self.price_limit)
 
-    def send(self):
-        return requests.post(
-            AlertConstants.URL,
-            auth=("api", AlertConstants.API_KEY),
-            data={
-                "from": AlertConstants.FROM,
-                "to": self.user_email,
-                "subject": "Price for {0} is now ${1}".format(self.item.name, self.item.price),
-                "text": "It's A Deal!\n {0}\n {1} \n To navigate to the alert, visit {2}".format(
-                    self.item.name, self.item.url, "http://"+app.config['DOMAIN']+"/alerts/{}".format(self._id))
-            }
-        )
+    def send(self, gmail, password):
+        email = EmailMessage()
+        email['Subject'] = "Price for {0} is now ${1}".format(self.item.name, self.item.price)
+        email['From'] = "WhaleofDeal"
+        email['To'] = self.user_email
+        content = "It's A Deal!\n {0}\n {1} \n To navigate to the alert, visit {2}".format(self.item.name, self.item.url, "https://whaleofdeal.herokuapp.com/alerts/{}".format(self._id))
+        email.set_content(content)
+
+        s = smtplib.SMTP(host='smtp.gmail.com', port=587)
+        s.starttls()
+        s.login(gmail, password)
+
+        s.send_message(email)
+        s.quit()
+        # return requests.post(
+        #     AlertConstants.URL,
+        #     auth=("api", AlertConstants.API_KEY),
+        #     data={
+        #         "from": AlertConstants.FROM,
+        #         "to": self.user_email,
+        #         "subject": "Price for {0} is now ${1}".format(self.item.name, self.item.price),
+        #         "text": "It's A Deal!\n {0}\n {1} \n To navigate to the alert, visit {2}".format(
+        #             self.item.name, self.item.url, "http://"+app.config['DOMAIN']+"/alerts/{}".format(self._id))
+        #     }
+        # )
 
     @classmethod
     def find_needing_update(cls, minutes_since_update=AlertConstants.ALERT_TIMEOUT):
@@ -61,9 +75,9 @@ class Alert:
         self.save_to_mongo()
         return self.item.price
 
-    def send_email_if_price_reached(self):
+    def send_email_if_price_reached(self, gmail, password):
         if self.item.price < self.price_limit:
-            self.send()
+            self.send(gmail, password)
 
     @classmethod
     def find_by_user_email(cls, user_email):
