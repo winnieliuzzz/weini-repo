@@ -5,11 +5,13 @@ import src.models.stores.errors as StoreErrors
 
 
 class Store:
-    def __init__(self, name, url_prefix,tag_name, query, _id=None):
+    def __init__(self, name, url_prefix, price_tag, price_query, img_query, img_src_tag, _id=None):
         self.name = name
         self.url_prefix = url_prefix
-        self.tag_name = tag_name
-        self.query = query
+        self.price_tag = price_tag
+        self.price_query = price_query
+        self.img_query = img_query
+        self.img_src_tag = img_src_tag
         self._id = uuid.uuid4().hex if _id is None else _id
 
     def __repr__(self):
@@ -20,8 +22,10 @@ class Store:
             "_id": self._id,
             "name": self.name,
             "url_prefix": self.url_prefix,
-            "tag_name": self.tag_name,
-            "query": self.query
+            "price_tag": self.price_tag,
+            "price_query": self.price_query,
+            "img_query": self.img_query,
+            "img_src_tag": self.img_src_tag
         }
 
     @classmethod

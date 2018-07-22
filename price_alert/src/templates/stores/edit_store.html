@@ -15,14 +15,24 @@
                 <small id="storeURLPrefixHelp" class="form-text text-muted">What characters do URLs of all items in this store start with?</small>
             </div>
             <div class="form-group">
-                <label for="tag_name">Tag Name</label>
-                <input type="text" class="form-control" id="tag_name" name="tag_name" placeholder="span" value="{{store.tag_name}}" aria-describedby="storeTagNameHelp">
+                <label for="price_tag">Price Tag</label>
+                <input type="text" class="form-control" id="price_tag" name="price_tag" placeholder="span" value="{{store.price_tag}}" aria-describedby="storeTagNameHelp">
                 <small id="storeTagNameHelp" class="form-text text-muted">What is the HTML tag of the item that contains the item price? (usually <code>span</code>)</small>
             </div>
             <div class="form-group">
-                <label for="query">Search Query</label>
-                <input type="text" class="form-control" id="query" name="query" placeholder='{"id": "price-now"}' value='{{store.query | tojson}}' aria-describedby="queryHelpBlock">
+                <label for="price_query">Price Query</label>
+                <input type="text" class="form-control" id="price_query" name="price_query" placeholder='{"id": "price-now"}' value='{{store.price_query | tojson}}' aria-describedby="queryHelpBlock">
                 <small id="queryHelpBlock" class="form-text text-muted">What JSON query would we have to do to find the specific tag with the price? Remember to use double quotation marks.</small>
+            </div>
+            <div class="form-group">
+                <label for="img_query">Image Query</label>
+                <input type="text" class="form-control" id="img_query" name="img_query" placeholder='{"itemprop": "image"}' value='{{store.img_query | tojson}}' aria-describedby="imgQueryHelpBlock">
+                <small id="imgQueryHelpBlock" class="form-text text-muted">What JSON query would we have to do to find the specific tag with the price? Remember to use double quotation marks.</small>
+            </div>
+            <div class="form-group">
+                <label for="img_src_tag">Image Tag</label>
+                <input type="text" class="form-control" id="img_src_tag" name="img_src_tag" placeholder="src" value="{{store.img_src_tag}}" aria-describedby="storeImgTagNameHelp">
+                <small id="storeImgTagNameHelp" class="form-text text-muted">What is the HTML tag of the item that contains the item img src? (usually <code>src</code>)</small>
             </div>
             <button type="submit" class="btn btn-success">Update</button>
         </form>

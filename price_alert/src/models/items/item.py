@@ -8,13 +8,14 @@ from src.models.stores.store import Store
 
 
 class Item:
-    def __init__(self, name, url, price=None, _id=None):
+    def __init__(self, name, url, price=None, img_src=None, _id=None):
         self.name = name
         self.url = url
         store = Store.find_by_url(url)
-        self.tag_name = store.tag_name
-        self.query = store.query
+        self.price_tag = store.price_tag
+        self.price_query = store.price_query
         self.price = None if price is None else price
+        self.img_src = self.get_img_src(store.img_query, store.img_src_tag) if img_src is None else img_src
         self._id = uuid.uuid4().hex if _id is None else _id
 
     def __repr__(self):
@@ -24,12 +25,19 @@ class Item:
         request = requests.get(self.url)
         content = request.content
         soup = BeautifulSoup(content, "html.parser")
-        element = soup.find(self.tag_name, self.query)
+        element = soup.find(self.price_tag, self.price_query)
         string_price = element.text.strip()
         pattern = re.compile("(\d+.\d+)")
         match = pattern.search(string_price)
         self.price = float(match.group())
         return self.price
+
+    def get_img_src(self, img_query, img_src_tag):
+        request = requests.get(self.url)
+        content = request.content
+        soup = BeautifulSoup(content, "html.parser")
+        img_src = soup.find("img", img_query)[img_src_tag]
+        return img_src
 
     def save_to_mongo(self):
         Database.update(ItemConstants.COLLECTION, {'_id': self._id}, self.json())
@@ -39,7 +47,8 @@ class Item:
             "_id": self._id,
             "name": self.name,
             "url": self.url,
-            "price": self.price
+            "price": self.price,
+            "img_src": self.img_src
         }
 
     @classmethod

@@ -24,8 +24,10 @@ def edit_store(store_id):
     if request.method=='POST':
         store.name = request.form['name']
         store.url_prefix = request.form['url_prefix']
-        store.tag_name = request.form['tag_name']
-        store.query = request.form['query']
+        store.price_tag = request.form['price_tag']
+        store.price_query = request.form['price_query']
+        store.img_query = request.form['img_query']
+        store.img_src_tag = request.form['img_src_tag']
         store.save_to_mongo()
         return redirect(url_for('.index'))
     return render_template('stores/edit_store.html', store=store)
@@ -44,8 +46,10 @@ def create_store():
     if request.method=='POST':
         name = request.form['name']
         url_prefix = request.form['url_prefix']
-        tag_name = request.form['tag_name']
-        query = json.loads(request.form['query'])
-        Store(name, url_prefix, tag_name, query).save_to_mongo()
+        price_tag = request.form['price_tag']
+        price_query = json.loads(request.form['price_query'])
+        img_query = json.loads(request.form['img_query'])
+        img_src_tag = request.form['img_src_tag']
+        Store(name, url_prefix, price_tag, price_query, img_query, img_src_tag).save_to_mongo()
         return redirect(url_for('.index'))
     return render_template('stores/new_store.html')

@@ -7,11 +7,12 @@
         {% for alert in alerts %}
         <a href="{{url_for('alerts.get_alert_page', alert_id = alert._id)}}" class="list-group-item list-group-item-action {{'list-group-item-warning' if not alert.active}} flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1"><i class="{{'fas fa-times-circle' if not alert.active}}"></i>
-                    Alert for {{ alert.item.name }}</h5>
+                <img width="60" height="75" src="{{alert.item.img_src}}">
                 <small class="text-muted">Last checked {{alert.last_checked.strftime("%Y-%m-%d at %H:%M")}}</small>
+
             </div>
             <p class="mb-1">Last price found <strong>${{alert.item.price}}</strong></p>
+
         </a>
         {% endfor %}
     </div>
