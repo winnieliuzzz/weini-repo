@@ -3,8 +3,7 @@
     <div class="pb-2 mt-4 mb-2 border-bottom">
         <h2>Supported Stores</h2>
     </div>
-    <div class="card">
-      <div class="card-body">
+    <div>
         <div class="btn-group mr-2 flex-wrap">
             {% for store in stores %}
                 {% if session['email'] in config.ADMINS %}
@@ -22,9 +21,9 @@
                 {% endif %}
             {% endfor %}
         </div>
-
-      </div>
     </div>
+
+
 
     {% if session['email'] in config.ADMINS %}
         <br>

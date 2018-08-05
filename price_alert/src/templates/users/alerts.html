@@ -3,19 +3,25 @@
     <div class="pb-2 mt-4 mb-2 border-bottom">
         <h1>My Alerts</h1>
     </div>
-    <div class="list-group">
+
+    <div class="card-columns">
         {% for alert in alerts %}
-        <a href="{{url_for('alerts.get_alert_page', alert_id = alert._id)}}" class="list-group-item list-group-item-action {{'list-group-item-warning' if not alert.active}} flex-column align-items-start">
-            <div class="d-flex w-100 justify-content-between">
-                <img width="60" height="75" src="{{alert.item.img_src}}">
-                <small class="text-muted">Last checked {{alert.last_checked.strftime("%Y-%m-%d at %H:%M")}}</small>
-
+            <div class="card {{'bg-light border-warning mb-3' if not alert.active else 'bg-basic border-primary mb-3'}}" style="width: 12rem; height: 20rem;">
+                <div class="card-header bg-transparent {{'border-warning' if not alert.active else 'border-primary'}}">
+                    <a href="{{url_for('alerts.get_alert_page', alert_id = alert._id)}}">
+                        <img class="card-img-top" width="60" height="180" src="{{alert.item.img_src}}">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <small class="text-muted">@ {{alert.last_checked.strftime("%Y-%m-%d at %H:%M")}}</small>
+                        <p class="mb-1">Price Found <strong>${{alert.item.price}}</strong></p>
+                    </div>
+                </div>
             </div>
-            <p class="mb-1">Last price found <strong>${{alert.item.price}}</strong></p>
-
-        </a>
         {% endfor %}
     </div>
+
     <br>
     <a class="btn btn-success" href="{{url_for('alerts.create_alert')}}"><i class="fas fa-plus"></i> Create</a>
 {% endblock %}
